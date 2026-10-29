@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0b1020">
+    <meta name="description" content="Find the primes, crack the code, and claim the bonus in What's the Prime?">
+    <title>What's the Prime? — Number Hunt</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="What's the Prime? home">
+          <span class="brand-mark" aria-hidden="true">π</span>
+          <span>PRIME<span class="brand-dot">.</span>HUNT</span>
+        </a>
+        <div class="topbar-tag"><span class="status-dot"></span> NUMBER HUNT · SOLO</div>
+      </header>
+
+      <section id="menu-screen" class="screen menu-screen" aria-labelledby="game-title">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="eyebrow-line"></span> A LITTLE MATH. A LOT OF INSTINCT.</p>
+          <h1 id="game-title">WHAT'S<br>THE <span>PRIME?</span></h1>
+          <p class="hero-subtitle">Find the primes. Crack the code. Claim the bonus!</p>
+          <p class="hero-description">Sixteen numbers. One hidden bonus. Can you spot every prime before the clock runs out?</p>
+          <div class="hero-actions">
+            <button id="play-button" class="button button-primary button-large" type="button">
+              PLAY NOW <span aria-hidden="true">→</span>
+            </button>
+            <button id="instructions-button" class="button button-quiet" type="button">
+              <span class="help-icon" aria-hidden="true">?</span> HOW TO PLAY
+            </button>
+          </div>
+        </div>
+
+        <aside class="menu-side" aria-label="Game setup">
+          <div class="menu-card difficulty-card">
+            <div class="card-heading">
+              <div>
+                <p class="eyebrow">CHOOSE YOUR CHALLENGE</p>
+                <h2>Pick a difficulty</h2>
+              </div>
+              <span class="heading-spark" aria-hidden="true">✦</span>
+            </div>
+            <div class="difficulty-options" role="group" aria-label="Difficulty">
+              <button class="difficulty-option is-selected" type="button" data-difficulty="easy" aria-pressed="true">
+                <span class="difficulty-name">EASY</span>
+                <span class="difficulty-range">20 — 90</span>
+                <span class="difficulty-indicator" aria-hidden="true"></span>
+              </button>
+              <button class="difficulty-option" type="button" data-difficulty="medium" aria-pressed="false">
+                <span class="difficulty-name">MEDIUM</span>
+                <span class="difficulty-range">100 — 999</span>
+                <span class="difficulty-indicator" aria-hidden="true"></span>
+              </button>
+              <button class="difficulty-option" type="button" data-difficulty="hard" aria-pressed="false">
+                <span class="difficulty-name">HARD</span>
+                <span class="difficulty-range">1,000 — 9,999</span>
+                <span class="difficulty-indicator" aria-hidden="true"></span>
+              </button>
+            </div>
+            <div class="best-score-row">
+              <span>YOUR BEST <span class="best-difficulty">· EASY</span></span>
+              <strong id="best-score">0</strong>
+            </div>
+            <p id="storage-note" class="storage-note" role="status" aria-live="polite"></p>
+          </div>
+          <div class="tip-card">
+            <span class="tip-icon" aria-hidden="true">✳</span>
+            <p><strong>Quick tip</strong><br>A prime has exactly two factors: 1 and itself.</p>
+          </div>
+        </aside>
+        <div class="hero-orbit orbit-one" aria-hidden="true">2</div>
+        <div class="hero-orbit orbit-two" aria-hidden="true">7</div>
+      </section>
+
+      <section id="game-screen" class="screen game-screen" aria-labelledby="round-title" hidden>
+        <div class="game-heading">
+          <div>
+            <p class="eyebrow"><span class="eyebrow-line"></span> THE NUMBER GRID</p>
+            <h1 id="round-title">Find your <span>primes.</span></h1>
+            <p class="game-instruction">Select every prime number, then lock in your answers.</p>
+          </div>
+          <div class="game-controls">
+            <button id="pause-button" class="button button-outline" type="button">Ⅱ <span>PAUSE</span></button>
+            <button id="restart-button" class="button button-outline" type="button">↻ <span>RESTART</span></button>
+            <button id="quit-button" class="button button-quiet" type="button">QUIT</button>
+          </div>
+        </div>
+
+        <div class="game-status" aria-label="Round status">
+          <div class="status-chip"><span class="chip-label">ROUND</span><strong id="round-number">01</strong></div>
+          <div class="status-chip"><span class="chip-label">DIFFICULTY</span><strong id="difficulty-label">EASY</strong></div>
+          <div class="status-chip score-chip"><span class="chip-label">TOTAL SCORE</span><strong id="total-score">0</strong></div>
+          <div class="status-chip timer-chip"><span class="timer-icon" aria-hidden="true">◷</span><span class="chip-label">TIME LEFT</span><strong id="timer">60</strong></div>
+        </div>
+
+        <div class="board-layout">
+          <div class="board-panel">
+            <div class="board-topline">
+              <span><span class="live-dot"></span> YOUR GRID</span>
+              <span id="selection-count">0 SELECTED</span>
+            </div>
+            <div id="number-grid" class="number-grid" role="group" aria-label="Number tiles"></div>
+            <div id="round-message" class="round-message" role="status" aria-live="polite">Take your time. You have 60 seconds.</div>
+          </div>
+          <aside class="side-panel">
+            <div class="score-card">
+              <p class="eyebrow">ROUND REWARDS</p>
+              <h2>Make it count.</h2>
+              <ul class="points-list">
+                <li><span class="points-icon points-positive">+</span><span>Correct prime</span><strong>100</strong></li>
+                <li><span class="points-icon points-negative">−</span><span>Wrong pick</span><strong>50</strong></li>
+                <li><span class="points-icon points-bonus">✦</span><span>Secret prime</span><strong>250</strong></li>
+                <li><span class="points-icon points-bonus">★</span><span>All primes</span><strong>200</strong></li>
+              </ul>
+              <p class="score-note">Score never drops below zero.</p>
+            </div>
+            <button id="submit-button" class="button button-primary submit-button" type="button">
+              SUBMIT ANSWERS <span aria-hidden="true">→</span>
+            </button>
+            <p class="submit-hint">You can change your picks until you submit.</p>
+          </aside>
+        </div>
+      </section>
+
+      <section id="results-screen" class="screen results-screen" aria-labelledby="results-title" hidden>
+        <div class="results-heading">
+          <p class="eyebrow"><span class="eyebrow-line"></span> ROUND COMPLETE</p>
+          <h1 id="results-title">Nice <span>work.</span></h1>
+          <p id="results-message" class="results-message"></p>
+        </div>
+        <div class="results-layout">
+          <div class="results-main">
+            <div class="round-points-card">
+              <div>
+                <p class="eyebrow">POINTS THIS ROUND</p>
+                <strong id="round-score">+0</strong>
+              </div>
+              <div class="total-points">
+                <span>TOTAL SCORE</span>
+                <strong id="results-total">0</strong>
+              </div>
+            </div>
+            <div class="result-stats">
+              <div class="result-stat"><strong id="correct-count">0</strong><span>Correct picks</span></div>
+              <div class="result-stat"><strong id="incorrect-count">0</strong><span>Wrong picks</span></div>
+              <div class="result-stat"><strong id="missed-count">0</strong><span>Missed primes</span></div>
+            </div>
+            <div class="answer-card">
+              <p class="eyebrow">THE PRIME NUMBERS</p>
+              <div id="prime-answers" class="prime-answers"></div>
+              <p id="score-breakdown" class="score-breakdown"></p>
+              <p id="bonus-reveal" class="bonus-reveal"></p>
+            </div>
+          </div>
+          <aside class="results-side">
+            <div class="bonus-card">
+              <span class="bonus-star" aria-hidden="true">✦</span>
+              <p class="eyebrow">BONUS CHECK</p>
+              <p id="secret-result" class="bonus-result"></p>
+              <p id="completion-result" class="completion-result"></p>
+            </div>
+            <div class="results-actions">
+              <button id="next-round-button" class="button button-primary" type="button">NEXT ROUND <span aria-hidden="true">→</span></button>
+              <button id="play-again-button" class="button button-outline" type="button">PLAY AGAIN</button>
+              <button id="main-menu-button" class="button button-quiet" type="button">MAIN MENU</button>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <footer class="footer"><span>BUILT FOR CURIOUS MINDS</span><span>THINK FAST. THINK PRIME. <span aria-hidden="true">✦</span></span></footer>
+    </main>
+
+    <div id="pause-overlay" class="pause-overlay" hidden>
+      <section class="pause-card" role="dialog" aria-modal="true" aria-labelledby="pause-title">
+        <p class="eyebrow">TAKE A BREATHER</p>
+        <h2 id="pause-title">Game paused.</h2>
+        <p>Your timer is on hold. Come back when you're ready.</p>
+        <button id="resume-button" class="button button-primary" type="button">RESUME ROUND</button>
+        <button id="pause-menu-button" class="button button-quiet" type="button">QUIT TO MAIN MENU</button>
+      </section>
+    </div>
+
+    <dialog id="instructions-dialog" class="instructions-dialog" aria-labelledby="instructions-title">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">THE RULES OF THE HUNT</p>
+          <h2 id="instructions-title">How to play</h2>
+        </div>
+        <button id="close-instructions" class="dialog-close" type="button" aria-label="Close instructions">×</button>
+      </div>
+      <ol class="instructions-list">
+        <li><span>01</span><p>Select every prime number on the board.</p></li>
+        <li><span>02</span><p>A prime is an integer greater than 1 with exactly two positive divisors: 1 and itself.</p></li>
+        <li><span>03</span><p>Submit your selections before the 60-second timer runs out.</p></li>
+        <li><span>04</span><p>Correct selections earn points; selecting a non-prime loses points.</p></li>
+        <li><span>05</span><p>One prime is secretly marked as the bonus prime. Find it for extra points.</p></li>
+        <li><span>06</span><p>Find every prime on the board to earn the completion bonus.</p></li>
+      </ol>
+      <div class="examples"><span>29</span> is prime <span class="example-divider">·</span> <span>30</span> is not prime</div>
+      <button id="got-it-button" class="button button-primary dialog-done" type="button">GOT IT</button>
+    </dialog>
+  </body>
+</html>
